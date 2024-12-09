@@ -1,14 +1,8 @@
 from mrjob.job import MRJob
 
+## Produce a condensed list of unique pokemon until gen 8 and their stats 
 class PokemonStatMapping(MRJob):
-    pkmnCount = 0
-    totalHP = 0
-    totalAtt = 0
-    totalDef = 0
-    totalSAtt = 0
-    totalSDef = 0
-    totalSpd = 0
-    
+
     ##splits file by line
     def mapper(self, _, line):
         thelist = line.split("/n")
@@ -31,35 +25,11 @@ class PokemonStatMapping(MRJob):
 
         pokemonStats = pokemon[lastIndex-5] + "," + pokemon[lastIndex-4] + "," + pokemon[lastIndex-3] + "," + pokemon[lastIndex-2] + "," + pokemon[lastIndex-1] + "," + pokemon[lastIndex] + "," + str(statTotal)
         
-        """
-        if(pokemon[0] != "No"): ##To ensure header is not counted
-            self.pkmnCount += 1
-            self.totalHP += int(pokemon[lastIndex-5])
-            self.totalAtt += int(pokemon[lastIndex-4])
-            self.totalDef += int(pokemon[lastIndex-3])
-            self.totalSAtt += int(pokemon[lastIndex-2])
-            self.totalSDef += int(pokemon[lastIndex-1])
-            self.totalSpd += int(pokemon[lastIndex])
-        """
-        
-        yield pokemonID, pokemonStats
-    print(pkmnCount)
-    
-    """
-    avgHP = totalHP/pkmnCount
-    avgAtt = totalAtt/pkmnCount
-    avgDef = totalDef/pkmnCount
-    avgSAtt = totalSAtt/pkmnCount
-    avgSDef = totalSDef/pkmnCount
-    avgSpeed = totalSpd/pkmnCount
+        if pokemonID[0] == '0':
+            yield pokemonID, pokemonStats
+        else:
+            pass
 
-    print("Average HP: " + str(avgHP))
-    print("Average Attack: " + str(avgAtt))
-    print("Average Defense: " + str(avgDef))
-    print("Average Special Attack: " + str(avgSAtt))
-    print("Average Special Defense: " + str(avgSDef))
-    print("Average Speed: " + str(avgSpd))
-    """
 
 if __name__ == '__main__':
     PokemonStatMapping.run()
