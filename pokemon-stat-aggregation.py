@@ -11,7 +11,7 @@ class PokemonStatAggregation(MRJob):
         key = key.strip('\"')
         value = value.strip('\"')
         
-        # Extract generation based on Pokédex number (from the key)
+        # get gen based on pokedex number
 
         pokemon_id = key.split(" - ")[0]
         pokedex = int(pokemon_id)
@@ -45,7 +45,7 @@ class PokemonStatAggregation(MRJob):
         totalHp = totalAtt = totalDef = totalSatt = totalSdef = totalSpd = totalStatTotal = 0
         count = 0
         
-        # Aggregate stats for each generation
+        # aggregate stats for each generation
         for stats in values:
             totalHp += stats[0]
             totalAtt += stats[1]
@@ -56,7 +56,7 @@ class PokemonStatAggregation(MRJob):
             totalStatTotal += stats[6]
             count += 1
 
-        # Calculate the averages
+        # calculate the averages
         avgHp = totalHp / count
         avgAtt = totalAtt / count
         avgDef = totalDef / count
@@ -65,8 +65,8 @@ class PokemonStatAggregation(MRJob):
         avgSpd = totalSpd / count
         avgStatTotal = totalStatTotal / count
 
-        # Yield the generation with the average stats as the value
+        # yield the generation and average stats
         yield key, [avgHp, avgAtt, avgDef, avgSatt, avgSdef, avgSpd, avgStatTotal]
 
 if __name__ == '__main__':
-    PokemonStatAggregation.run()
+    output = PokemonStatAggregation.run()
