@@ -5,7 +5,7 @@ class PokemonStatMapping(MRJob):
 
     ##splits file by line
     def mapper(self, _, line):
-        thelist = line.split("/n")
+        thelist = line.split("\n")
         for x in thelist:
             yield x, 1
 
@@ -23,6 +23,7 @@ class PokemonStatMapping(MRJob):
             except ValueError:
                 pass
 
+        # set value equal to all 6 stats, plus a stat total, comma-seperated
         pokemonStats = pokemon[lastIndex-5] + "," + pokemon[lastIndex-4] + "," + pokemon[lastIndex-3] + "," + pokemon[lastIndex-2] + "," + pokemon[lastIndex-1] + "," + pokemon[lastIndex] + "," + str(statTotal)
         
         if pokemonID[0] == '0':

@@ -11,8 +11,9 @@ def replace_commas_in_quotes(input_file, output_file):
         for row in reader:
           new_row = []
           for field in row:
-            if ', ' in field:
+            if (', ' or ' ') in field:
               new_field = re.sub(r'(?<!^), (?!$)', '/', field)
+              new_field = re.sub(r'(?<!^) (?!$)', '_', new_field)
               new_row.append(new_field)
             else:
               new_row.append(field)
