@@ -18,11 +18,20 @@ class PokemonStatMapping(MRJob):
     ##reduces data to just id/name and stat values.
     def reducer(self, key, values):
         pokemon = key.split(",")
-        pokemonID = pokemon[0] + " - " + pokemon[1]
-
+        pokemonID = pokemon[0] + " - " + pokemon[1] + " - " + pokemon[2]
+        statTotal = 0
         lastIndex = len(pokemon) - 1
-        pokemonStats = pokemonStats = pokemon[lastIndex-5] + "," + pokemon[lastIndex-4] + "," + pokemon[lastIndex-3] + "," + pokemon[lastIndex-2] + "," + pokemon[lastIndex-1] + "," + pokemon[lastIndex]
 
+        # use a for loop to sum all stats of each pokemon
+        for i in range(6):
+            try:
+                statTotal += int(pokemon[lastIndex - i])
+            except ValueError:
+                pass
+
+        pokemonStats = pokemon[lastIndex-5] + "," + pokemon[lastIndex-4] + "," + pokemon[lastIndex-3] + "," + pokemon[lastIndex-2] + "," + pokemon[lastIndex-1] + "," + pokemon[lastIndex] + "," + str(statTotal)
+        
+        """
         if(pokemon[0] != "No"): ##To ensure header is not counted
             self.pkmnCount += 1
             self.totalHP += int(pokemon[lastIndex-5])
@@ -31,9 +40,9 @@ class PokemonStatMapping(MRJob):
             self.totalSAtt += int(pokemon[lastIndex-2])
             self.totalSDef += int(pokemon[lastIndex-1])
             self.totalSpd += int(pokemon[lastIndex])
+        """
         
         yield pokemonID, pokemonStats
-        ##yield key, sum(values)
     print(pkmnCount)
     
     """
